@@ -1,6 +1,6 @@
 import spacy
 import re
-from datetime import date, timedelta # Added for date handling example
+from datetime import date, timedelta
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -98,10 +98,10 @@ def parse_query(query_text):
          "show user names" in query_text.lower():
         sql_query = "SELECT name FROM users;"
 
-    # --- Rule 11: Users with specific email address (BROADENED) ---
+    # --- Rule 11: Users with specific email address ---
     elif "users with email" in query_text.lower() or \
          "users whose email is" in query_text.lower() or \
-         "find users email" in query_text.lower(): # Added common phrases
+         "find users email" in query_text.lower():
         email_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
         match = re.search(email_pattern, query_text)
         
@@ -112,7 +112,7 @@ def parse_query(query_text):
         else:
             print("DEBUG: No email address found in query for email rule.")
 
-    # --- Rule 12: Users registered after a certain date (moved import to top) ---
+    # --- Rule 12: Users registered after a certain date ---
     elif "users registered after" in query_text.lower():
         date_str = None
         for ent in doc.ents:
@@ -121,7 +121,7 @@ def parse_query(query_text):
                 if re.match(r'\d{4}-\d{2}-\d{2}', date_str):
                     sql_query = f"SELECT * FROM users WHERE registration_date > '{date_str}';"
                     break
-        if sql_query is None:
+        if sql_query is None: 
             if "last year" in query_text.lower():
                 today = date.today()
                 last_year_start = date(today.year - 1, 1, 1)
@@ -135,7 +135,7 @@ def parse_query(query_text):
                 user_name = ent.text
                 break
         
-        if not user_name:
+        if not user_name: 
             tokens = query_text.lower().split()
             try:
                 from_idx = tokens.index("from")
@@ -174,29 +174,51 @@ def parse_query(query_text):
                 break
         if year:
             sql_query = f"SELECT * FROM users WHERE EXTRACT(YEAR FROM registration_date) = {year};"
+    
+    #  RULE: Orders between two dates ---
+    elif "orders between" in query_text.lower() and "and" in query_text.lower():
+        dates_found = []
+        for ent in doc.ents:
+            if ent.label_ == "DATE":
+                # Basic YYYY-MM-DD validation for extracted dates
+                date_text = ent.text.strip()
+                if re.match(r'\d{4}-\d{2}-\d{2}', date_text):
+                    dates_found.append(date_text)
+        
+        # Ensure exactly two dates were found and they are distinct
+        if len(dates_found) == 2:
+            # Sort them to ensure date1 is before date2 for BETWEEN
+            date1 = min(dates_found)
+            date2 = max(dates_found)
+            sql_query = f"SELECT * FROM orders WHERE order_date BETWEEN '{date1}' AND '{date2}';"
+            print(f"DEBUG: Extracted dates for BETWEEN: {date1} and {date2}")
+        else:
+            print(f"DEBUG: Could not extract two valid YYYY-MM-DD dates for 'orders between' query.")
 
 
     print(f"Parsed query: '{query_text}' -> SQL: {sql_query}")
     return sql_query
 
-# if __name__ == '__main__':
-#     print("\n--- Running nlp_parser.py tests ---")
-#     print(parse_query("Show all users"))
-#     print(parse_query("How many users are there?"))
-#     print(parse_query("What is the total sales amount?"))
-#     print(parse_query("List all products"))
-#     print(parse_query("Show orders for laptop"))
-#     print(parse_query("Find users named Alice"))
-#     print(parse_query("Find users named Bob Johnson"))
-#     print(parse_query("Count orders by product name"))
-#     print(parse_query("Show product names and quantities"))
-#     print(parse_query("Orders by price greater than 100"))
-#     print(parse_query("users name"))
-#     print(parse_query("user names"))
-#     print(parse_query("show user names"))
-#     print(parse_query("users registered after 2023-04-01"))
-#     print(parse_query("orders from user Alice Smith"))
-#     print(parse_query("show orders with quantity 1"))
-#     print(parse_query("users with email alice@example.com"))
-#     print(parse_query("Find users whose email is bob@example.com")) # <-- NEW TEST CASE
-#     print(parse_query("all users registered in 2023"))
+if __name__ == '__main__':
+    print("\n--- Running nlp_parser.py tests ---")
+    print(parse_query("Show all users"))
+    print(parse_query("How many users are there?"))
+    print(parse_query("What is the total sales amount?"))
+    print(parse_query("List all products"))
+    print(parse_query("Show orders for laptop"))
+    print(parse_query("Find users named Alice"))
+    print(parse_query("Find users named Bob Johnson"))
+    print(parse_query("Count orders by product name"))
+    print(parse_query("Show product names and quantities"))
+    print(parse_query("Orders by price greater than 100"))
+    print(parse_query("users name"))
+    print(parse_query("user names"))
+    print(parse_query("show user names"))
+    print(parse_query("users registered after 2023-04-01"))
+    print(parse_query("orders from user Alice Smith"))
+    print(parse_query("show orders with quantity 1"))
+    print(parse_query("users with email alice@example.com"))
+    print(parse_query("Find users whose email is bob@example.com"))
+    print(parse_query("all users registered in 2023"))
+    print(parse_query("Show orders between 2023-06-01 and 2023-08-31"))     
+    print(parse_query("Show orders between August 1st, 2023 and September 30, 2023")) 

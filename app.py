@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-import psycopg2 # Import psycopg2 instead of sqlite3
+import psycopg2 
 from nlp_parser import parse_query
 
 app = Flask(__name__)
@@ -9,7 +9,7 @@ DB_HOST = 'localhost'
 DB_PORT = '5433'
 DB_NAME = 'datadrill_db'
 DB_USER = 'datadrill_user'
-DB_PASSWORD = 'Dhruv@123' # Replace with your actual password
+DB_PASSWORD = 'Dhruv@123'
 
 def get_db_connection():
     conn = None
@@ -21,8 +21,7 @@ def get_db_connection():
             user=DB_USER,
             password=DB_PASSWORD
         )
-        # For fetching results as dictionary-like objects (similar to sqlite3.Row)
-        # You can also use psycopg2.extras.DictCursor
+        # For fetching results as dictionary-like objects
         return conn
     except psycopg2.Error as e:
         print(f"Error connecting to PostgreSQL: {e}")
@@ -56,7 +55,6 @@ def execute_sql_query(sql_query):
 def index():
     return render_template('index.html')
 
-# Handle Chrome DevTools request silently
 @app.route('/.well-known/appspecific/com.chrome.devtools.json')
 def devtools_config():
     return jsonify({}), 200

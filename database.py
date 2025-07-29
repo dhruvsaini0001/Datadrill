@@ -1,12 +1,12 @@
 import psycopg2
-from psycopg2 import sql # For safe identifier quoting
+from psycopg2 import sql 
 
 # PostgreSQL connection details
 DB_HOST = 'localhost'
 DB_PORT = '5433'
 DB_NAME = 'datadrill_db'
 DB_USER = 'datadrill_user'
-DB_PASSWORD = 'Dhruv@123' # Replace with your actual password
+DB_PASSWORD = 'Dhruv@123' 
 
 def create_connection():
     conn = None
@@ -35,7 +35,7 @@ def create_tables(conn):
                 email TEXT UNIQUE NOT NULL,
                 registration_date DATE NOT NULL
             )
-        ''').format(sql.Identifier('users'))) # Use sql.Identifier for table names
+        ''').format(sql.Identifier('users'))) #  sql.Identifier for table names
 
         # Orders table
         cursor.execute(sql.SQL('''

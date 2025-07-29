@@ -10,18 +10,18 @@ This log documents the iterative development and testing of the `nlp_parser.py` 
 * **User Prompt:** `Show all users`
 * **Generated SQL:** `SELECT id, name, email, registration_date FROM users;`
 * **Expected Result:** A table with all user data.
-* **Actual Result:** (Paste screenshot or description of actual table data).
+* **Actual Result:** ![alt text](prompt_log_ss/image.png)
 * **Notes/Observations/Fixes:** This was the initial basic query to confirm the end-to-end pipeline was working. No issues found.
 
 ---
 
-## Log Entry 2: Product Search (Case-Sensitivity Issue)
+## Log Entry 2: Product Search 
 
 * **Date:** 2025-07-29
 * **User Prompt:** `show orders for laptop`
 * **Generated SQL (Initial):** `SELECT * FROM orders WHERE product_name LIKE '%laptop%';`
 * **Expected Result:** Orders for 'Laptop'.
-* **Actual Result:** "No results found."
+* **Actual Result:** ![alt text](prompt_log_ss/image-1.png)
 * **Notes/Observations/Fixes:** Discovered that PostgreSQL `LIKE` is case-sensitive by default. Modified `nlp_parser.py` to use `ILIKE` instead of `LIKE` for product name searches (`product_name ILIKE '%{product_name}%'`). Retested and confirmed fix.
 
 ---
@@ -87,7 +87,7 @@ This log documents the iterative development and testing of the `nlp_parser.py` 
 * **User Prompt:** `Orders by price greater than 100`
 * **Generated SQL:** `SELECT * FROM orders WHERE price > 100.0;`
 * **Expected Result:** A table listing all orders where the price is greater than 100.
-* **Actual Result:** (Paste screenshot or description of actual table data, e.g., showing Laptop, Monitor, Smartwatch, Headphones orders)
+* **Actual Result:** ![alt text](prompt_log_ss/image-2.png)
 * **Notes/Observations/Fixes:** Implemented logic to detect "greater than" combined with numerical values using `token.like_num` and generate a `WHERE` clause with the `>` operator. Verified that the filtering works correctly based on the numeric value extracted.
 
 ---
@@ -98,7 +98,7 @@ This log documents the iterative development and testing of the `nlp_parser.py` 
 * **User Prompt:** `Show product names and quantities`
 * **Generated SQL:** `SELECT product_name, quantity FROM orders;`
 * **Expected Result:** A table with two columns: `product_name` and `quantity` for all orders.
-* **Actual Result:** (Paste screenshot or description of actual table data)
+* **Actual Result:** ![alt text](prompt_log_ss/image-3.png)
 * **Notes/Observations/Fixes:** Added a rule to parse requests for specific columns, generating a `SELECT` statement with the requested fields. Confirmed it correctly fetches and displays only the specified columns.
 
 ---
@@ -109,8 +109,8 @@ This log documents the iterative development and testing of the `nlp_parser.py` 
 * **User Prompt:** `users registered after 2023-04-01`
 * **Generated SQL:** `SELECT * FROM users WHERE registration_date > '2023-04-01';`
 * **Expected Result:** A table showing users registered after April 1st, 2023 (e.g., Diana Prince, Eve Adams).
-* **Actual Result:** (Paste screenshot or description of actual table data)
-* **Notes/Observations/Fixes:** Implemented parsing for date entities (`DATE` label from spaCy) and generation of `WHERE` clauses for date comparisons. Included a basic regex check for YYYY-MM-DD format. Confirmed correct date filtering.
+* **Actual Result:** ![alt text](prompt_log_ss/image-4.png)
+ **Notes/Observations/Fixes:** Implemented parsing for date entities (`DATE` label from spaCy) and generation of `WHERE` clauses for date comparisons. Included a basic regex check for YYYY-MM-DD format. Confirmed correct date filtering.
 
 ---
 
@@ -120,7 +120,7 @@ This log documents the iterative development and testing of the `nlp_parser.py` 
 * **User Prompt:** `all users registered in 2023`
 * **Generated SQL:** `SELECT * FROM users WHERE EXTRACT(YEAR FROM registration_date) = 2023;`
 * **Expected Result:** A table showing users registered in 2023 (Alice, Bob, Charlie, Diana).
-* **Actual Result:** (Paste screenshot or description of actual table data)
+* **Actual Result:** ![alt text](prompt_log_ss/image-5.png)
 * **Notes/Observations/Fixes:** Added a rule to extract a four-digit year and use `EXTRACT(YEAR FROM ...)` in the SQL query for filtering by registration year. This demonstrates using PostgreSQL-specific date functions.
 
 ---
@@ -131,27 +131,8 @@ This log documents the iterative development and testing of the `nlp_parser.py` 
 * **User Prompt:** `show orders with quantity 1`
 * **Generated SQL:** `SELECT * FROM orders WHERE quantity = 1;`
 * **Expected Result:** A table showing orders where the quantity is exactly 1.
-* **Actual Result:** (Paste screenshot or description of actual table data)
+* **Actual Result:** ![alt text](prompt_log_ss/image-6.png)
 * **Notes/Observations/Fixes:** Implemented a simple rule to identify numerical values after "quantity" and use them in an equality (`=`) comparison in the `WHERE` clause.
-
----
-
-## Log Entry 13: Orders from a Specific User (Join Query)
-
-* **Date:** 2025-07-29
-* **User Prompt:** `orders from user Alice Smith`
-* **Generated SQL:**
-    ```sql
-    SELECT u.name, o.product_name, o.quantity, o.price, o.order_date
-    FROM users u
-    JOIN orders o ON u.id = o.user_id
-    WHERE u.name ILIKE '%alice smith%';
-    ```
-* **Expected Result:** A table showing all orders placed by Alice Smith.
-* **Actual Result:** (Paste screenshot or description of actual table data)
-* **Notes/Observations/Fixes:** Developed logic to identify a user name in the context of "orders from user" and generate a `JOIN` query between the `users` and `orders` tables. This showcases handling multi-table queries. Ensured `ILIKE` is used for user name matching.
-
-
 
 ---
 
@@ -161,7 +142,7 @@ This log documents the iterative development and testing of the `nlp_parser.py` 
 * **User Prompt:** `Show orders between 2023-06-01 and 2023-08-31`
 * **Generated SQL (Example - assuming parsing for two dates):** `SELECT * FROM orders WHERE order_date BETWEEN '2023-06-01' AND '2023-08-31';`
 * **Expected Result:** Orders from June, July, and August 2023 (e.g., Laptop, Mouse, Keyboard, Monitor).
-* **Actual Result:** (Paste screenshot or description of actual table data)
+* **Actual Result:** ![alt text](prompt_log_ss/image-7.png)
 * **Notes/Observations/Fixes:** This query requires detecting two distinct date entities and using the `BETWEEN` operator. If it failed, the parser would need enhancement to extract both dates and formulate the `BETWEEN` clause correctly. (If your parser doesn't handle this yet, describe how it would be implemented, e.g., using `doc.ents` to find multiple `DATE` entities).
 
 ---
@@ -172,7 +153,7 @@ This log documents the iterative development and testing of the `nlp_parser.py` 
 * **User Prompt:** `Total sales for Laptop`
 * **Generated SQL (Example - requires extracting product and summing):** `SELECT SUM(quantity * price) FROM orders WHERE product_name ILIKE '%laptop%';`
 * **Expected Result:** A single value representing the total sales for 'Laptop'.
-* **Actual Result:** ![alt text](prompt_log_ss/image.png)
+* **Actual Result:** ![alt text](prompt_log_ss/ss.png)
 * **Notes/Observations/Fixes:** This combines aggregation (`SUM`) with a `WHERE` clause filter. The parser needs to identify both the aggregation intent and the specific product. If it initially failed, discuss how the rule was modified to combine these elements.
 
 ---
@@ -183,32 +164,7 @@ This log documents the iterative development and testing of the `nlp_parser.py` 
 * **User Prompt:** `Find users named Alice and registered after 2023-01-01`
 * **Generated SQL (Example - requires combining two WHERE clauses):** `SELECT * FROM users WHERE name ILIKE '%alice%' AND registration_date > '2023-01-01';`
 * **Expected Result:** Alice Smith's row (if she meets both criteria).
-* **Actual Result:** (Paste screenshot or description of actual table data)
+* **Actual Result:** ![alt text](prompt_log_ss/image.png)
 * **Notes/Observations/Fixes:** Handling compound conditions with "and" or "or" is a significant step. If it failed, describe the challenge of detecting multiple conditions and joining them with `AND` in the SQL, possibly using spaCy's dependency parsing to link conditions.
 
 ---
-
-## Log Entry 17: Sorting Results
-
-* **Date:** 2025-07-29
-* **User Prompt:** `Show all users ordered by name`
-* **Generated SQL (Example):** `SELECT id, name, email, registration_date FROM users ORDER BY name ASC;`
-* **Expected Result:** All users, sorted alphabetically by name.
-* **Actual Result:** (Paste screenshot or description of actual table data)
-* **Notes/Observations/Fixes:** This requires recognizing "ordered by" or "sort by" phrases and extracting the column name for the `ORDER BY` clause. You might also consider `ASC` (ascending) and `DESC` (descending) options.
-
----
-
-## Log Entry 18: Unparseable Query (Intentional Failure Case)
-
-* **Date:** 2025-07-29
-* **User Prompt:** `What is the meaning of life?`
-* **Generated SQL:** `None`
-* **Expected Result:** "Could not understand your query. Please try rephrasing."
-* **Actual Result:** "Could not understand your query. Please try rephrasing."
-* **Notes/Observations/Fixes:** This is a good test for the robustness of the parser's "no match" handling. It confirms that the system appropriately declines to generate SQL for irrelevant or out-of-scope queries.
-
----
-
-
-![alt text](image.png)
