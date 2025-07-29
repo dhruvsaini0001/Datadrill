@@ -1,0 +1,80 @@
+/* static/style.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+}
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+h1 {
+    color: #0056b3;
+    text-align: center;
+    margin-bottom: 30px;
+}
+.query-input {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+#queryInput {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+#submitQuery {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+#submitQuery:hover {
+    background-color: #0056b3;
+}
+.error-message {
+    color: red;
+    background-color: #ffe0e0;
+    border: 1px solid red;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+#loading {
+    text-align: center;
+    margin-top: 15px;
+    font-style: italic;
+    color: #666;
+}
+.results-table {
+    margin-top: 20px;
+    overflow-x: auto; /* For responsive tables */
+}
+.results-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+.results-table th, .results-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+.results-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+.results-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}

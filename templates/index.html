@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataDrill Query Engine</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>DataDrill - Plain-Language Query Engine</h1>
+        <div class="query-input">
+            <input type="text" id="queryInput" placeholder="Enter your query, e.g., 'Show all users'">
+            <button id="submitQuery">Get Data</button>
+        </div>
+        <div id="loading" style="display: none;">Loading...</div>
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        <div id="resultsTable" class="results-table">
+            </div>
+    </div>
+<script src="{{ url_for('static', filename='scripts.js') }}"></script></body>
+</html>
