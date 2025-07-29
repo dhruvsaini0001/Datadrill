@@ -137,7 +137,7 @@ Here are a few examples of queries the engine can process:
 
 | User Prompt                         | Generated SQL (Example)                                                                  | UI Screenshot / Expected Result |
 | :---------------------------------- | :--------------------------------------------------------------------------------------- | :------------------------------ |
-| `Show all users`                    | `SELECT id, name, email, registration_date FROM users;`                                  | (Screenshot of all users table) |
+| `Show all users`                    | `SELECT id, name, email, registration_date FROM users;`                                  | ![alt text](prompt_log_ss/image.png) |
 | `Find users named Alice`            | `SELECT * FROM users WHERE name ILIKE '%alice%';`                                        | (Screenshot of Alice's row)     |
 | `Count orders by product name`      | `SELECT product_name, COUNT(*) FROM orders GROUP BY product_name;`                       | (Screenshot of product counts)  |
 | `users with email bob@example.com`  | `SELECT * FROM users WHERE email ILIKE 'bob@example.com';`                               | (Screenshot of Bob's row)       |
