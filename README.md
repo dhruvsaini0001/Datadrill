@@ -138,14 +138,14 @@ Here are a few examples of queries the engine can process:
 | User Prompt                         | Generated SQL (Example)                                                                  | UI Screenshot / Expected Result |
 | :---------------------------------- | :--------------------------------------------------------------------------------------- | :------------------------------ |
 | `Show all users`                    | `SELECT id, name, email, registration_date FROM users;`                                  | ![alt text](prompt_log_ss/image.png) |
-| `Find users named Alice`            | `SELECT * FROM users WHERE name ILIKE '%alice%';`                                        | (Screenshot of Alice's row)     |
-| `Count orders by product name`      | `SELECT product_name, COUNT(*) FROM orders GROUP BY product_name;`                       | (Screenshot of product counts)  |
-| `users with email bob@example.com`  | `SELECT * FROM users WHERE email ILIKE 'bob@example.com';`                               | (Screenshot of Bob's row)       |
-| `What is the total sales amount?`   | `SELECT SUM(quantity * price) FROM orders;`                                              | (Screenshot of total sales)     |
-| `List all products`                 | `SELECT DISTINCT product_name FROM orders;`                                              | (Screenshot of product list)    |
-| `Show orders for laptop`            | `SELECT * FROM orders WHERE product_name ILIKE '%laptop%';`                              | (Screenshot of laptop orders)   |
-| `Orders by price greater than 100`  | `SELECT * FROM orders WHERE price > 100;`                                                | (Screenshot of relevant orders) |
-| `All users registered in 2023`      | `SELECT * FROM users WHERE EXTRACT(YEAR FROM registration_date) = 2023;`                 | (Screenshot of 2023 users)      |
+| `Find users named Alice`            | `SELECT * FROM users WHERE name ILIKE '%alice%';`                                        | ![alt text](prompt_log_ss/image-8.png)     |
+| `Count orders by product name`      | `SELECT product_name, COUNT(*) FROM orders GROUP BY product_name;`                       | ![alt text](prompt_log_ss/image-10.png)|
+| `users with email bob@example.com`  | `SELECT * FROM users WHERE email ILIKE 'bob@example.com';`                               | ![alt text](prompt_log_ss/image-9.png)      |
+| `What is the total sales amount?`   | `SELECT SUM(quantity * price) FROM orders;`                                              | ![alt text](prompt_log_ss/image-11.png)     |
+| `List all products`                 | `SELECT DISTINCT product_name FROM orders;`                                              | ![alt text](prompt_log_ss/image-12.png)    |
+| `Show orders for laptop`            | `SELECT * FROM orders WHERE product_name ILIKE '%laptop%';`                              | ![alt text](prompt_log_ss/image-1.png)   |
+| `Orders by price greater than 100`  | `SELECT * FROM orders WHERE price > 100;`                                                | ![alt text](prompt_log_ss/image-2.png) |
+| `All users registered in 2023`      | `SELECT * FROM users WHERE EXTRACT(YEAR FROM registration_date) = 2023;`                 | ![alt text](prompt_log_ss/image-5.png)|
 
 
 ## Future Improvements (Optional)
