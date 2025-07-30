@@ -64,7 +64,7 @@ Before running the application, ensure PostgreSQL is configured:
 
 1.  **Clone the Repository (or download/extract the project files):**
     ```bash
-    git clone <your-repo-url>
+    git clone <https://github.com/dhruvsaini0001/Datadrill.git>
     cd datadrill
     ```
     (If not using Git, just ensure you're in the `datadrill` project directory).
